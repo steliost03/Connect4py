@@ -6,7 +6,7 @@ This was created as a semester project in an introductory course to programming
 in the Department of Electrical and Computer Engineering of the University of
 Patras.
 
-<img src="./Screenshots/connect4_screen1.png" width="45%"> <img src="./Screenshots/connect4_screen2.png" width="45%">
+<img src="./Screenshots/connect4_screen1.png" width="48%"> <img src="./Screenshots/connect4_screen2.png" width="48%">
 
 
 # Authors
