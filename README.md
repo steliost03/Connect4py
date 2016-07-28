@@ -1,5 +1,5 @@
 # Connect4py
-A Connect 4 implementation for 1 or 2 players written in Python 2.7.
+A Connect 4 implementation for one or two players written in Python 2.7.
 Requires the python-tk package.
 
 This was created as a semester project in an introductory course to programming
