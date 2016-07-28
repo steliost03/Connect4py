@@ -8,7 +8,11 @@ Patras.
 
 # Authors
 Argiris Dramountanis
+
 Nikos Kerastas
+
 Vasilis Paloglou
+
 Sotiris Papatheodorou
+
 Stelios Tsiakalos

@@ -255,53 +255,67 @@ def addcpu(pl):
     if win(board,col)==pl:
         nextturn=0
 
+# Check which player won
 def paikths(board,col):
     """board,column"""
-    #elegxei poios paikths nikhse
     if board[col][len(board[col])-1]==1:
         return 1
     else:
         return 2
 
+# Check if one of the players won
 def win(board,col):
     """board,column"""
-    #elegxei an sxhmatizetai tetrada me ton panw disko ths sthlhs col
-    #sthles
-    if len(board[col])>=4:#an h sthlh exei 4 h perissoterous diskous
+	# Returns the number of the player that won or zero if nobody won
+	# Only need to check around the disk that was added last
+
+    # Check columns
+    if len(board[col])>=4:
+		# If the column has 4 or more disks
         i,cons=len(board[col])-1,1
-        while (i>=1) and (cons<4):#metraei tous synexomenous diskous idiou xrwmatos
+        while (i>=1) and (cons<4):
+			# Count consequtive disks with the same color
             if board[col][i]==board[col][i-1]:
                 i,cons=i-1,cons+1
             else:
                 break
-        if cons==4:#an oi synexomenoi diskoi einai 4 kalei th synarthsh pou epistrefei to xrwma(1 h 2)
+        if cons==4:
+			# If 4 consequtive disks were found, check which player won
             return paikths(board,col)
-    #grammes
-    if len(board[3])>=len(board[col]):#an den yparxei diskos sth mesaia sthlh den sxhmatizetai orizontia tetrada
+
+    # Check rows - no need to check if there is no disk in the middle column
+    if len(board[3])>=len(board[col]):
         i,j,cons=len(board[col])-1,col,1
-        while (j<=5) and (cons<4):#metraei tous synexomenous diskous idiou xrwmatos deksia ths col
+        while (j<=5) and (cons<4):
+			# Count consequtive disks with the same colot on the right of col
             try:
                 if board[j][i]==board[j+1][i]:
                     j,cons=j+1,cons+1
                 else:
                     break
-            except IndexError:#IndexError exw an prospa8hsei na prospelasei stoixeio ths listas pou den yparxei dhladh keno stoixeio tou pinaka
+            except IndexError:
+				# Raised when an empty cell is encountered
                 break
         if cons==4:
+			# If 4 consequtive disks were found, check which player won
             return paikths(board,col)
         j=col
-        while (j>=1) and (cons<4):#metraei tous synexomenous diskous idiou xrwmatos aristera ths col
+        while (j>=1) and (cons<4):
+			# Count consequtive disks with the same colot on the left of col
             try:
                 if board[j][i]==board[j-1][i]:
                     j,cons=j-1,cons+1
                 else:
                     break
             except IndexError:
+				# Raised when an empty cell is encountered
                 break
         if cons==4:
+			# If 4 consequtive disks were found, check which player won
             return paikths(board,col)
-    #diagwnioi
-    #metraei tous synexomenous diskous idiou xrwmatos panw deksia
+
+    # Check giagonals
+    # Count consequtive disks on the top right
     i,j,cons=len(board[col])-1,col,1
     while i<5 and j<6 and cons<4:
         try:
@@ -314,7 +328,7 @@ def win(board,col):
             break
     if cons==4:
             return paikths(board,col)
-    #katw aristera
+    # Count consequtive disks on the bottom left
     i,j=len(board[col])-1,col
     while i>0 and j>0 and cons<4:
         try:
@@ -327,7 +341,7 @@ def win(board,col):
             break
     if cons==4:
             return paikths(board,col)
-    #panw aristera
+    # Count consequtive disks on the top left
     i,j,cons=len(board[col])-1,col,1
     while i<5 and j>0 and cons<4:
         try:
@@ -340,7 +354,7 @@ def win(board,col):
             break
     if cons==4:
             return paikths(board,col)
-    #katw deksia
+    # Count consequtive disks on the bottom right
     i,j=len(board[col])-1,col
     while i>0 and j<6 and cons<4:
         try:
@@ -353,29 +367,32 @@ def win(board,col):
             break
     if cons==4:
             return paikths(board,col)
-    return 0#an den sxhmatizetai tetrada epistrefei 0 alliws ton arithmo tou paikth
+	# Return zero if nobody won
+    return 0
 
+# Rate a possible move of the given player
 def rate(board,col,pl):
     """board,column,player"""
-    #va8mologei mia pi8anh kinhsh tou paikth pl
+
     score=0
     if len(board[col])<6:
-        #sthles
+        # Columns
         cons=0
         for i in range(len(board[col])-1,-1,-1):
             if board[col][i]==pl:
                 cons=cons+1
             else:
                 break
-        #elgxei an yparxei xwros gia tetrada
-        #prosthetei th vathmologia
+        # Check if there is enough space
         if 6-len(board[col])+cons>=4:
+			# Add the rating
             if cons>=3:
-                score=score+1337
+                score=score+1337 # Arbitrary large number for high priority
             else:
                 score=score+cons
-        #grammes
-        #antigrafei th grammh se mia lista
+
+		# Rows
+        # Copy the line in a list
         line=[]
         i=len(board[col])
         for j in range(7):
@@ -387,7 +404,7 @@ def rate(board,col,pl):
             except IndexError:
                 line.append(0)
                 continue
-        #deksia ths col
+        # On the right of col
         consr=0
         j=col+1
         counterr=0
@@ -401,7 +418,7 @@ def rate(board,col,pl):
             else:
                 counterr=counterr+1
                 j=j+1
-        #aristera ths col
+        # On the left of col
         consl=0
         j=col-1
         counterl=0
@@ -415,15 +432,16 @@ def rate(board,col,pl):
             else:
                 counterl=counterl+1
                 j=j-1
-        #prosthetei th vathmologia
+        # Add the rating
         if counterr+counterl+1>=4:
             if (consr>=3) or (consl>=3) or (consr+consl>=3):
                 score=score+1337
             else:
                 score=score+consr+consl
-        #diagwnioi
-        #katw deksia-panw aristera
-        #antigrafei th diagwnio se mia lista
+
+		# Diagonal
+        # bottom right upper left
+        # Copy the diagonal in a list
         line[:]=[]
         i=len(board[col])
         k=i
@@ -449,7 +467,7 @@ def rate(board,col,pl):
                 k=k+1
                 l=l-1
                 continue
-        #deksia tou deikths
+        # On the right of deikths
         consr=0
         j=deikths+1
         counterr=0
@@ -466,7 +484,7 @@ def rate(board,col,pl):
                     j=j+1
             except IndexError:
                 break
-        #aristera tou deikths
+        # On the left of deikths
         consl=0
         j=deikths-1
         counterl=0
@@ -483,14 +501,14 @@ def rate(board,col,pl):
                     j=j-1
             except IndexError:
                 break
-        #prosthetei th vathmologia
+        # Add the rating
         if counterr+counterl+1>=4:
             if (consr>=3) or (consl>=3) or (consr+consl>=3):
                 score=score+1337
             else:
                 score=score+consr+consl
-        #katw aristera-panw deksia
-        #antigrafei th diagwnio se mia lista
+        # bottom left upper right
+        # Copy the diagonal in a list
         line[:]=[]
         i=len(board[col])
         k=i
@@ -513,7 +531,7 @@ def rate(board,col,pl):
                 k=k+1
                 l=l+1
                 continue
-        #deksia tou deikths
+        # On the left of deikths
         consr=0
         j=deikths+1
         counterr=0
@@ -530,7 +548,7 @@ def rate(board,col,pl):
                     j=j+1
             except IndexError:
                 break
-        #aristera tou deikths
+        # On the right of deikths
         consl=0
         j=deikths-1
         counterl=0
@@ -547,7 +565,7 @@ def rate(board,col,pl):
                     j=j-1
             except IndexError:
                 break
-        #prosthetei th vathmologia
+        # Add the rating
         if counterr+counterl+1>=4:
             if (consr>=3) or (consl>=3) or (consr+consl>=3):
                 score=score+1337
@@ -557,24 +575,24 @@ def rate(board,col,pl):
     else:
         return -2
 
+# Check if the given player can win in a single move
 def ratewin(board,col,pl):
     """board,column,player"""
-    #elegxei an o paikths pl mporei na nikhsei me mia kinhsh
+	# This follows a similar procedure to rate()
     score=0
     if len(board[col])<6:
-        #sthles
+        # Columns
         cons=0
         for i in range(len(board[col])-1,-1,-1):
             if board[col][i]==pl:
                 cons=cons+1
             else:
                 break
-        #elgxei an yparxei xwros gia tetrada
         if 6-len(board[col])+cons>=4:
             if cons>=3:
                 score=score+1337
-        #grammes
-        #antigrafei th grammh se mia lista
+
+		# Rows
         line=[]
         i=len(board[col])
         for j in range(7):
@@ -586,7 +604,6 @@ def ratewin(board,col,pl):
             except IndexError:
                 line.append(0)
                 continue
-        #deksia ths col
         consr=0
         j=col+1
         counterr=0
@@ -597,7 +614,6 @@ def ratewin(board,col,pl):
                 j=j+1
             else:
                 break
-        #aristera ths col
         consl=0
         j=col-1
         counterl=0
@@ -611,9 +627,8 @@ def ratewin(board,col,pl):
         if counterr+counterl+1>=4:
             if (consr>=3) or (consl>=3) or (consr+consl>=3):
                 score=score+1337
-        #diagwnioi
-        #katw deksia-panw aristera
-        #antigrafei th diagwnio se mia lista
+
+		# Diagonal
         line[:]=[]
         i=len(board[col])
         k=i
@@ -639,7 +654,6 @@ def ratewin(board,col,pl):
                 k=k+1
                 l=l-1
                 continue
-        #deksia tou deikths
         consr=0
         j=deikths+1
         counterr=0
@@ -653,7 +667,6 @@ def ratewin(board,col,pl):
                     break
             except IndexError:
                 break
-        #aristera tou deikths
         consl=0
         j=deikths-1
         counterl=0
@@ -670,8 +683,6 @@ def ratewin(board,col,pl):
         if counterr+counterl+1>=4:
             if (consr>=3) or (consl>=3) or (consr+consl>=3):
                 score=score+1337
-        #katw aristera-panw deksia
-        #antigrafei th diagwnio se mia lista
         line[:]=[]
         i=len(board[col])
         k=i
@@ -694,7 +705,6 @@ def ratewin(board,col,pl):
                 k=k+1
                 l=l+1
                 continue
-        #deksia tou deikths
         consr=0
         j=deikths+1
         counterr=0
@@ -708,7 +718,6 @@ def ratewin(board,col,pl):
                     break
             except IndexError:
                 break
-        #aristera tou deikths
         consl=0
         j=deikths-1
         counterl=0
@@ -729,26 +738,31 @@ def ratewin(board,col,pl):
     else:
         return -2
 
-#kyriws programma
+
+################################################################################
+############################# Main program #####################################
+################################################################################
+
 from turtle import *
 from random import choice
 synexeia='y'
-games=1#metraei posa paixnidia exoun paixtei
+games=1 # Number of games played
 initboard()
 plnum=raw_input('Enter the number of players(1/2): ')
 while plnum not in ['1','2']:
     plnum=raw_input('Please 1 or 2: ')
 print
 print "----------------------------"
-if plnum=='1':#enas paikths
-    humanscore,computerscore=0,0#arxikopoiei ta score
-    while synexeia=='y':#epanalhpsh paixnidiou
-        nextturn=1#oso einai 1 synexizetai to trexon paixnidi
-        if games%2==1:#oi paiktes ksekinoun enallaks se kathe paixnidi
+if plnum=='1':
+	# One player vs cpu
+    humanscore,computerscore=0,0
+    while synexeia=='y': # Game loop
+        nextturn=1 # The current game continues while this is true
+        if games%2==1: # Change who plays first on each game
             player=1
         else:
             player=2
-        while nextturn==1:#epanalhpsh gyrou
+        while nextturn==1: # Round loop
             if player==1:
                 print 'Human is playing'
                 add(player)
@@ -756,10 +770,10 @@ if plnum=='1':#enas paikths
                 addcpu(player)
                 print 'Computer played in column',col+1
             print
-            player=player%2+1#to x%2+1 dinei 1 an to x einai 2 kai 2 an to x einai 1
+            player=player%2+1 # Change the current player
         print "----------------------------"
         print
-        if win(board,col)==1:#elegxei poios nikhse
+        if win(board,col)==1:
             print 'Human won!'
             humanscore=humanscore+1
         elif win(board,col)==2:
@@ -778,7 +792,8 @@ if plnum=='1':#enas paikths
             synexeia=raw_input('Please y or n: ')
         if synexeia=='y':
             emptyboard()
-else:#dyo paiktes
+else:
+	# Two players
     yellowscore,redscore=0,0
     while synexeia=='y':
         nextturn=1
