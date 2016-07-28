@@ -1,4 +1,4 @@
-#	 Connect4py - A Connect 4 implementation for 1 or 2 players
+#    Connect4py - A Connect 4 implementation for 1 or 2 players
 #    Copyright (C) 2011  Argiris Dramountanis, Nikos Kerastas, Vasilis Paloglou,
 #	 Sotiris Papatheodorou, Stelios Tsiakalos
 #
