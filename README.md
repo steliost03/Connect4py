@@ -6,6 +6,8 @@ This was created as a semester project in an introductory course to programming
 in the Department of Electrical and Computer Engineering of the University of
 Patras.
 
+![alt](https://github.com/Vatsamanis/Connect4py/Screenshots/connect4_screen1.png) ![alt](https://github.com/Vatsamanis/Connect4py/Screenshots/connect4_screen2.png)
+
 # Authors
 Argiris Dramountanis
 
