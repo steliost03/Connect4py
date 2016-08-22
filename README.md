@@ -24,6 +24,8 @@ Sotiris Papatheodorou
 Stelios Tsiakalos
 
 ## License
+Copyright © 2016 Argiris Dramountanis, Nikos Kerastas, Vasilis Paloglou, Sotiris Papatheodorou, Stelios Tsiakalos
+
 This program is free software: you can redistribute it and/or modify <br>
 it under the terms of the GNU General Public License as published by <br>
 the Free Software Foundation, either version 3 of the License, or <br>
