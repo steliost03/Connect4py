@@ -10,7 +10,7 @@ Patras.
 <img src="./Screenshots/connect4_screen1.png" width="49%"> <img src="./Screenshots/connect4_screen2.png" width="49%">
 
 ## Usage
-Use the terminal/console window for input to the program. You cannot use a mouse for input.
+Use the terminal/console window for input to the program.
 
 ## Authors
 Argiris Dramountanis
